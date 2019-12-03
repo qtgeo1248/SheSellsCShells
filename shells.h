@@ -11,3 +11,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
+
+char **parse_args(char *line);
+void free_args(char **args);
