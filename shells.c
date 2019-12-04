@@ -1,6 +1,6 @@
 #include "shells.h"
 
-char **parse_args(char *line) {
+char **parse_args(char *line, int *length) {
     char *token;
     char **tokens;
     tokens = malloc(sizeof(char*) * 5);
@@ -12,6 +12,7 @@ char **parse_args(char *line) {
         i++;
     }
     tokens[i] = 0;
+    *length = i - 1;
     return tokens;
 }
 

@@ -12,5 +12,5 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-char **parse_args(char *line);
+char **parse_args(char *line, int *length);
 void free_args(char **args);
