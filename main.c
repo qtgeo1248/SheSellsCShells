@@ -9,7 +9,7 @@ int main() {
     char buf[1000] = "\0";
     while (strcmp(buf, "exit") != 0) {
         getcwd(dir, 1000);
-        printf("%s $ ", dir);
+        printf("%s$ ", dir);
         fgets(buf, 1000, stdin);
         buf[strlen(buf) - 1] = 0;
         test = buf;
