@@ -14,3 +14,4 @@
 
 char **parse_args(char *line, int *length);
 void free_args(char **args);
+char ***parse_parse_args(char *line, int *length);
