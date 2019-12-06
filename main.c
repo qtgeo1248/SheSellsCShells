@@ -1,7 +1,7 @@
 #include "shells.h"
 
 int main() {
-    int y = 0;
+    char y = 0;
     char *input = &y;
     int *status;
     char token[1000] = "\0";
