@@ -19,11 +19,12 @@ int main() {
         //printf("%s\n", input);
         while (strchr(input, ';') != NULL) {
         //  printf("Yah%s\n", input);
-          strcpy(token, strsep(&input, " ; "));
-        //  printf("%s\n", input);
+          strcpy(token, strsep(&input, ";"));
+          token[strlen(token)-1] = '\0';
+          input++;
+        //  printf("%s + %sEND\n", input, token);
           char **args = parse_args(token, length);
-
-          printf("T%s\n", token);
+        //  printf("T%s\n", token);
           if (strcmp(args[0], "cd") == 0) {
               if (*length == 0) {
                 chdir("/");
@@ -40,7 +41,7 @@ int main() {
           }
           //free_args(args);
         }
-        printf("T%s\n", input);
+      //  printf("T%s\n", input);
         char **args = parse_args(input, length);
 
 
