@@ -19,37 +19,46 @@ int main() {
         //printf("%s\n", input);
         while (strchr(input, ';') != NULL) {
         //  printf("Yah%s\n", input);
-          strcpy(token, strsep(&input, ";"));
-          token[strlen(token)-1] = '\0';
-          input++;
-        //  printf("%s + %sEND\n", input, token);
-          char **args = parse_args(token, length);
-        //  printf("T%s\n", token);
-          if (strcmp(args[0], "cd") == 0) {
-              if (*length == 0) {
-                chdir("/");
-              } else {
-                chdir(args[*length]);
-              }
-          } else {
-              int f = fork();
-              if (f) {
-                  wait(status);
-              } else {
-                  execvp(args[0], args);
-              }
-          }
-          //free_args(args);
+            strcpy(token, strsep(&input, ";"));
+            token[strlen(token)-1] = '\0';
+            input++;
+            //  printf("%s + %sEND\n", input, token);
+            char **args = parse_args(token, length);
+            //  printf("T%s\n", token);
+            if (strcmp(args[0], "cd") == 0) {
+                if (*length == 0) {
+                    chdir("/");
+                } else {
+                    chdir(args[*length]);
+                }
+            } if else (strchr(token, ">") != NULL) {
+                int fd = open(args[*length - 1]);
+                int backup = dup(1);
+                dup2(3, 1);
+                int i = strchr(token, ">");
+                for (; i < *length; i++) {
+                    args[i] = '\0';
+                }
+                execvp(args[0], args);
+                dup2(backup, 1);
+            } else {
+                int f = fork();
+                if (f) {
+                    wait(status);
+                } else {
+                    execvp(args[0], args);
+                }
+            }
+            //free_args(args);
         }
-      //  printf("T%s\n", input);
+        //  printf("T%s\n", input);
         char **args = parse_args(input, length);
-
 
         if (strcmp(args[0], "cd") == 0) {
             if (*length == 0) {
-              chdir("/");
+                chdir("/");
             } else {
-              chdir(args[*length]);
+                chdir(args[*length]);
             }
         } else {
             int f = fork();
@@ -59,7 +68,6 @@ int main() {
                 execvp(args[0], args);
             }
         }
-
     }
     return 0;
 }
