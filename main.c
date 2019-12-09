@@ -31,11 +31,11 @@ int main() {
                 } else {
                     chdir(args[*length]);
                 }
-            } if else (strchr(token, ">") != NULL) {
-                int fd = open(args[*length - 1]);
+            } else if (strchr(token, '>') != NULL) {
+                int fd = open(args[*length - 1], O_RDWR);
                 int backup = dup(1);
                 dup2(3, 1);
-                int i = strchr(token, ">");
+                int i = strchr(token, '>');
                 for (; i < *length; i++) {
                     args[i] = '\0';
                 }
