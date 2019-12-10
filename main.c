@@ -34,7 +34,7 @@ int main() {
             } else if (strchr(token, '>') != NULL) {
                 int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
                 int backup = dup(1);
-                dup2(3, 1);
+                dup2(fd, 1);
                 int boo = 0;
                 int i = 0;
                 for (; i < *length; i++) {
@@ -52,6 +52,7 @@ int main() {
                     execvp(args[0], args);
                 }
                 dup2(backup, 1);
+                close(fd);
             } else {
                 int f = fork();
                 if (f) {
@@ -81,7 +82,7 @@ int main() {
             int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
           //  printf("FD: %s\n", strerror(errno));
             int backup = dup(1);
-            dup2(3, 1);
+            dup2(fd, 1);
             int boo = 0;
             int count = 0;
 
@@ -102,6 +103,7 @@ int main() {
                 execvp(args[0], args);
             }
             dup2(backup, 1);
+            close(fd);
         } else {
             int f = fork();
             if (f) {
