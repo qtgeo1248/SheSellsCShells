@@ -20,9 +20,9 @@ int main() {
         while (strchr(input, ';') != NULL) {
         //  printf("Yah%s\n", input);
             strcpy(token, strsep(&input, ";"));
-            token[strlen(token)-1] = '\0';
+            token[strlen(token) - 1] = '\0';
             input++;
-          //  printf("%s + %sEND\n", input, token);
+        //    printf("%s + %sEND\n", input, token);
             char **args = parse_args(token, length);
           //  printf("T%s\n", token);
             if (strcmp(args[0], "cd") == 0) {
@@ -32,14 +32,25 @@ int main() {
                     chdir(args[*length]);
                 }
             } else if (strchr(token, '>') != NULL) {
-                int fd = open(args[*length - 1], O_RDWR);
+                int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
                 int backup = dup(1);
                 dup2(3, 1);
-                int i = strchr(token, '>');
+                int boo = 0;
+                int i = 0;
                 for (; i < *length; i++) {
-                    args[i] = '\0';
+                    if (strcmp(args[i], ">") == 0) {
+                        boo = 1;
+                    }
+                    if (boo == 1) {
+                        args[i] = NULL;
+                    }
                 }
-                execvp(args[0], args);
+                int f = fork();
+                if (f) {
+                    wait(status);
+                } else {
+                    execvp(args[0], args);
+                }
                 dup2(backup, 1);
             } else {
                 int f = fork();
@@ -76,12 +87,12 @@ int main() {
 
             for (; count < *length; count++) {
             //  printf("ThingT %d %d \n", count, *args[count] == '>');
-              if (*args[count] == '>') {
-                boo = 1;
-              }
-              if (boo == 1) {
-                args[count] = '\0';
-              }
+                if (*args[count] == '>') {
+                    boo = 1;
+                }
+                if (boo == 1) {
+                    args[count] = NULL;
+                }
             }
           //  printf("Thing %s \n", args[1]);
             int f = fork();
@@ -90,7 +101,6 @@ int main() {
             } else {
                 execvp(args[0], args);
             }
-
             dup2(backup, 1);
         } else {
             int f = fork();
