@@ -22,9 +22,9 @@ int main() {
             strcpy(token, strsep(&input, ";"));
             token[strlen(token)-1] = '\0';
             input++;
-            //  printf("%s + %sEND\n", input, token);
+          //  printf("%s + %sEND\n", input, token);
             char **args = parse_args(token, length);
-            //  printf("T%s\n", token);
+          //  printf("T%s\n", token);
             if (strcmp(args[0], "cd") == 0) {
                 if (*length == 0) {
                     chdir("/");
@@ -51,15 +51,47 @@ int main() {
             }
             //free_args(args);
         }
-        //  printf("T%s\n", input);
+        //printf("T%d\n", strchr(input, '>') != NULL);
+        //printf("%s\n", input);
+        char temp[1000];
+        strcpy(temp, input);
         char **args = parse_args(input, length);
-
+        //printf("Bs%s\n", args[0]);
+        //printf("T%d\n", strchr(temp, '>') != NULL);
         if (strcmp(args[0], "cd") == 0) {
             if (*length == 0) {
                 chdir("/");
             } else {
                 chdir(args[*length]);
             }
+        } else if (strchr(temp, '>') != NULL) {
+          //  printf("File %s\n", args[*length]);
+          //  umask(0);
+            int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
+          //  printf("FD: %s\n", strerror(errno));
+            int backup = dup(1);
+            dup2(3, 1);
+            int boo = 0;
+            int count = 0;
+
+            for (; count < *length; count++) {
+            //  printf("ThingT %d %d \n", count, *args[count] == '>');
+              if (*args[count] == '>') {
+                boo = 1;
+              }
+              if (boo == 1) {
+                args[count] = '\0';
+              }
+            }
+          //  printf("Thing %s \n", args[1]);
+            int f = fork();
+            if (f) {
+                wait(status);
+            } else {
+                execvp(args[0], args);
+            }
+
+            dup2(backup, 1);
         } else {
             int f = fork();
             if (f) {
