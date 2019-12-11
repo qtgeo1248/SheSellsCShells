@@ -38,13 +38,6 @@ void redir_out(char **args, int *length) {
           args[i] = '\0';
       }
   }
-  int f = fork();
-  if (f) {
-      wait(status);
-  } else {
-      execvp(args[0], args);
-  }
-  dup2(backup, 1);
   close(fd);
 }
 

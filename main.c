@@ -30,10 +30,17 @@ int main() {
           changedir(args, len);
         } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
           // redirection
-          if (strchr(temp, '>') != NULL) {
-            redir_out(args, len);
+          int f = fork();
+          if (f) {
+            wait(status);
           } else {
-            redir_in(args,len);
+            if (strchr(temp, '>') != NULL) {
+              redir_out(args, len);
+            }
+            if (strchr(temp, '<') != NULL) {
+              redir_in(args,len);
+            }
+            execvp(args[0], args);
           }
         } else { // nothing special
       //    printf("TRIGGERED\n");
