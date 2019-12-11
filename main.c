@@ -13,7 +13,7 @@ int main() {
     char ** commands = parse_args(input, length, ";");
     int i = 0; // counter for prompts for loop
     printf("TEST %s y%dy\n", commands[1], *length);
-    for (; i <= *length && commands[i] != NULL; i++) {
+    while (commands[i] != NULL) {
       printf("Com: %sEND\n", commands[i]);
       if (strcmp(commands[i], "exit") == 0) {
         return 0;
@@ -44,6 +44,7 @@ int main() {
         }
       }
       printf("NEXT: %sEND\n", commands[i+1]);
+      i++;
     }
   }
   return 0;
