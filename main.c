@@ -13,14 +13,14 @@ int main() {
     char ** commands = parse_args(input, length, ";");
     int i = 0; // counter for prompts for loop
     for (; i <= *length && commands[i] != NULL; i++) {
-    //  printf("Com: %sEND\n", commands[i]);
+      printf("Com: %sEND\n", commands[i]);
       if (strcmp(commands[i], "exit") == 0) {
         return 0;
       } else {
         int *len = &x;
         char *command = strip(commands[i]);
         char **args = parse_args(command, len, " ");
-      //  printf("Arg[0]: %sEND\n", args[0]);
+        printf("Arg[0]: %sEND\n", args[0]);
         // cd
         if (strcmp(args[0], "cd") == 0) {
           changedir(args, len);
