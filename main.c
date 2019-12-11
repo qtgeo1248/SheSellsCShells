@@ -30,7 +30,7 @@ int main() {
           changedir(args, len);
         } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
           // redirection
-          if (strchr(temp, '<') != NULL) {
+          if (strchr(temp, '>') != NULL) {
             redir_out(args, len);
           } else {
             redir_in(args,len);
