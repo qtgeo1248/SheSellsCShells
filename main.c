@@ -43,6 +43,7 @@ int main() {
           }
         }
       }
+      printf("NEXT: %sEND\n", commands[i+1]);
     }
   }
   return 0;
