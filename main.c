@@ -12,7 +12,7 @@ int main() {
     fgets(input, 1000, stdin);
     char ** commands = parse_args(input, length, ";");
     int i = 0; // counter for prompts for loop
-    for (; i <= *length; i++) {
+    for (; i <= *length && commands[i] != NULL; i++) {
     //  printf("Com: %sEND\n", commands[i]);
       if (strcmp(commands[i], "exit") == 0) {
         return 0;
