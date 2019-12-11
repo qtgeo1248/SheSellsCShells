@@ -31,6 +31,7 @@ void redir_out(char **args, int *length) {
   int backup = dup(1);
   printf("TRIGGERED-1 %s\n", args[*length]);
   dup2(fd, 1);
+  printf("%s\n", strerror(errno));
   printf("TRIGGERED-1 %s\n", args[*length]);
   int boo = 0; // boolean check
   int i = 0;
