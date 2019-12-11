@@ -21,6 +21,7 @@ int main() {
         int *len = &x;
         char *command = strip(commands[i]);
         char **args = parse_args(command, len, " ");
+        printf("Command: %sEND\n", commands[i]);
       //  printf("Arg[0]: %sEND\n", args[0]);
         // cd
         if (strcmp(args[0], "cd") == 0) {
