@@ -27,8 +27,10 @@ void redir_out(char **args, int *length) {
   printf("TRIGGERED-1 %s\n", args[*length]);
   int *status;
   int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
+  printf("TRIGGERED-1 %s\n", args[*length]);
   int backup = dup(1);
   dup2(fd, 1);
+  printf("TRIGGERED-1 %s\n", args[*length]);
   int boo = 0; // boolean check
   int i = 0;
   for (; i < *length; i++) {
