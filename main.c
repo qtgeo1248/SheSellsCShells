@@ -34,11 +34,11 @@ int main() {
           if (f) {
             wait(status);
           } else {
-            if (strchr(temp, '<') != NULL) {
-              redir_in(args, len);
-            }
             if (strchr(temp, '>') != NULL) {
-              redir_out(args,len);
+              redir_out(args, len);
+            }
+            if (strchr(temp, '<') != NULL) {
+              redir_in(args,len);
             }
             execvp(args[0], args);
           }
