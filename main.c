@@ -14,21 +14,23 @@ int main() {
     int i = 0; // counter for prompts for loop
   //  printf("TEST %s y%dy\n", commands[1], *length);
     while (commands[i] != NULL) {
-      printf("Com: %sEND\n", commands[i]);
+      char temp[1000];
+      strcpy(temp, commands[i]);
+  //    printf("Com: %sEND\n", commands[i]);
       if (strcmp(commands[i], "exit") == 0) {
         return 0;
       } else {
         int *len = &x;
         char *command = strip(commands[i]);
         char **args = parse_args(command, len, " ");
-        printf("Command: %sEND\n", commands[i]);
+      //  printf("Command: %sEND\n", commands[i]);
       //  printf("Arg[0]: %sEND\n", args[0]);
         // cd
         if (strcmp(args[0], "cd") == 0) {
           changedir(args, len);
-        } else if (strchr(commands[i], '<') != NULL || strchr(commands[i], '>') != NULL) {
+        } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
           // redirection
-          if (strchr(commands[i], '<') != NULL) {
+          if (strchr(temp, '<') != NULL) {
             redir_out(args, len);
           } else {
             redir_in(args,len);
