@@ -83,5 +83,8 @@ void free_args(char **args) {
 char *strip(char *line) {
   int index = strlen(line) - 1;
   line[index] = '\0';
+  if (line[0] == '\n' || line[0] == ' ') {
+    line++;
+  }
   return line;
 }
