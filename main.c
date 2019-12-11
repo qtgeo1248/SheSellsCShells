@@ -36,6 +36,7 @@ int main() {
           } else {
             if (strchr(temp, '>') != NULL) {
               redir_out(args, len);
+
             }
             if (strchr(temp, '<') != NULL) {
               redir_in(args,len);

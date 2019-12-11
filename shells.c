@@ -27,14 +27,12 @@ void redir_out(char **args, int *length) {
   int *status;
   int fd = open(args[*length], O_RDWR | O_CREAT, 0644);
   int backup = dup(STDOUT_FILENO);
+  //char temp[1000];
   dup2(fd, STDOUT_FILENO);
-  int boo = 0; // boolean check
   int i = 0;
   for (; i < *length; i++) {
       if (strcmp(args[i], ">") == 0) {
-          boo = 1;
-      }
-      if (boo == 1) {
+      //    strcpy(temp, tokens[i+1]);
           args[i] = '\0';
       }
   }
@@ -46,15 +44,12 @@ void redir_in(char **args, int *length) {
   int fd = open(args[*length], O_RDONLY);
   int backup = dup(STDIN_FILENO);
   dup2(fd, STDIN_FILENO);
-  int boo = 0;
   int i = 0;
   for (; i < *length; i++) {
-      if (strcmp(args[i], "<") == 0) {
-          boo = 1;
-      }
-      if (boo == 1) {
-          args[i] = '\0';
-      }
+    if (strcmp(args[i], "<") == 0) {
+    //    strcpy(temp, tokens[i+1]);
+        args[i] = '\0';
+    }
   }
   close(fd);
 }
