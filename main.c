@@ -31,6 +31,7 @@ int main() {
             redir_in(args,len);
           }
         } else { // nothing special
+          printf("TRIGGERED");
           int f = fork();
           if (f) {
             wait(status);
