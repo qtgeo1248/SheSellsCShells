@@ -24,6 +24,7 @@ void changedir(char **args, int *length) {
 }
 
 void redir_out(char **args, int *length) {
+  printf("TRIGGERED-1\n");
   int *status;
   int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
   int backup = dup(1);
