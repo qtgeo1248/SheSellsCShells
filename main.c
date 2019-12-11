@@ -31,28 +31,52 @@ int main() {
                 } else {
                     chdir(args[*length]);
                 }
-            } else if (strchr(token, '>') != NULL) {
-                int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
-                int backup = dup(1);
-                dup2(fd, 1);
-                int boo = 0;
-                int i = 0;
-                for (; i < *length; i++) {
-                    if (strcmp(args[i], ">") == 0) {
-                        boo = 1;
+            } else if (strchr(token, '>') != NULL || strchr(token, '<') != NULL) {
+                if (strchr(token, '>') != NULL) {
+                    int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
+                    int backup = dup(1);
+                    dup2(fd, 1);
+                    int boo = 0;
+                    int i = 0;
+                    for (; i < *length; i++) {
+                        if (strcmp(args[i], ">") == 0) {
+                            boo = 1;
+                        }
+                        if (boo == 1) {
+                            args[i] = NULL;
+                        }
                     }
-                    if (boo == 1) {
-                        args[i] = NULL;
+                    int f = fork();
+                    if (f) {
+                        wait(status);
+                    } else {
+                        execvp(args[0], args);
                     }
-                }
-                int f = fork();
-                if (f) {
-                    wait(status);
+                    dup2(backup, 1);
+                    close(fd);
                 } else {
-                    execvp(args[0], args);
+                    int fd = open(args[*length], O_RDONLY);
+                    int backup = dup(0);
+                    dup2(fd, 0);
+                    int boo = 0;
+                    int i = 0;
+                    for (; i < *length; i++) {
+                        if (strcmp(args[i], "<") == 0) {
+                            boo = 1;
+                        }
+                        if (boo == 1) {
+                            args[i] = NULL;
+                        }
+                    }
+                    int f = fork();
+                    if (f) {
+                        wait(status);
+                    } else {
+                        execvp(args[0], args);
+                    }
+                    dup2(backup, 0);
+                    close(fd);
                 }
-                dup2(backup, 1);
-                close(fd);
             } else {
                 int f = fork();
                 if (f) {
