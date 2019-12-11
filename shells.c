@@ -79,3 +79,9 @@ void free_args(char **args) {
         free(args[i]);
     }
 }
+
+char *strip(char *line) {
+  int index = strlen(line) - 1;
+  line[index] = '\0';
+  return line;
+}

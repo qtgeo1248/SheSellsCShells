@@ -13,6 +13,7 @@
 #include <signal.h>
 
 char **parse_args(char *line, int *length, char *del);
+char *strip(char *line);
 void changedir(char **args, int *length);
 void redir_out(char **args, int *length);
 void redir_in(char **args, int *length);

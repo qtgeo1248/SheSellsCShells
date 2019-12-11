@@ -18,14 +18,15 @@ int main() {
         return 0;
       } else {
         int *len = &x;
-        char **args = parse_args(commands[i], len, " ");
+        char *command = strip(commands[i]);
+        char **args = parse_args(command, len, " ");
         printf("Arg[0]: %sEND\n", args[0]);
         // cd
         if (strcmp(args[0], "cd") == 0) {
           changedir(args, len);
-        } else if (strchr(commands[i], '<') != NULL || strchr(commands[i], '>') != NULL) {
+        } else if (strchr(command, '<') != NULL || strchr(command, '>') != NULL) {
           // redirection
-          if (strchr(commands[i], '<') != NULL) {
+          if (strchr(command, '<') != NULL) {
             redir_out(args, len);
           } else {
             redir_in(args,len);
