@@ -44,8 +44,8 @@ void redir_out(char **args, int *length) {
 void redir_in(char **args, int *length) {
   int *status;
   int fd = open(args[*length], O_RDONLY);
-  int backup = dup(0);
-  dup2(fd, 0);
+  int backup = dup(STDIN_FILENO);
+  dup2(fd, STDIN_FILENO);
   int boo = 0;
   int i = 0;
   for (; i < *length; i++) {
@@ -53,16 +53,9 @@ void redir_in(char **args, int *length) {
           boo = 1;
       }
       if (boo == 1) {
-          args[i] = NULL;
+          args[i] = '\0';
       }
   }
-  int f = fork();
-  if (f) {
-      wait(status);
-  } else {
-      execvp(args[0], args);
-  }
-  dup2(backup, 0);
   close(fd);
 }
 
