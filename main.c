@@ -25,9 +25,9 @@ int main() {
         // cd
         if (strcmp(args[0], "cd") == 0) {
           changedir(args, len);
-        } else if (strchr(command, '<') != NULL || strchr(command, '>') != NULL) {
+        } else if (strchr(commands[i], '<') != NULL || strchr(commands[i], '>') != NULL) {
           // redirection
-          if (strchr(command, '<') != NULL) {
+          if (strchr(commands[i], '<') != NULL) {
             redir_out(args, len);
           } else {
             redir_in(args,len);
