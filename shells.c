@@ -24,15 +24,10 @@ void changedir(char **args, int *length) {
 }
 
 void redir_out(char **args, int *length) {
-  printf("TRIGGERED-1 %s\n", args[*length]);
   int *status;
-  int fd = open(args[*length], O_RDWR | O_CREAT, 0640);
-  printf("TRIGGERED-1 %s\n", args[*length]);
+  int fd = open(args[*length], O_RDWR | O_CREAT, 0644);
   int backup = dup(STDOUT_FILENO);
-  printf("TRIGGERED-1 %s\n", args[*length]);
   dup2(fd, STDOUT_FILENO);
-  printf("%s\n", strerror(errno));
-  printf("TRIGGERED-1 %s\n", args[*length]);
   int boo = 0; // boolean check
   int i = 0;
   for (; i < *length; i++) {
@@ -43,7 +38,6 @@ void redir_out(char **args, int *length) {
           args[i] = '\0';
       }
   }
-  printf("TRIGGERED\n");
   int f = fork();
   if (f) {
       wait(status);
