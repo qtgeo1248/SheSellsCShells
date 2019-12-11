@@ -14,7 +14,7 @@ int main() {
     int i = 0; // counter for prompts for loop
   //  printf("TEST %s y%dy\n", commands[1], *length);
     while (commands[i] != NULL) {
-    //  printf("Com: %sEND\n", commands[i]);
+      printf("Com: %sEND\n", commands[i]);
       if (strcmp(commands[i], "exit") == 0) {
         return 0;
       } else {
