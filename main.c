@@ -1,6 +1,49 @@
 #include "shells.h"
 
 int main() {
+  int x = 0; // filler int
+  int *length = &x;
+  char input[1000]; // fgets input
+  char dir[1000]; // bash prompt
+  int *status; // for parent process
+  while (strcmp(input, "exit") != 0) {
+    getcwd(dir, 1000);
+    printf("%s$ ", dir);
+    fgets(input, 1000, stdin);
+    char ** commands = parse_args(input, length, ";");
+    int i = 0; // counter for prompts for loop
+    for (; i < *length; i++) {
+      if (strcmp(commands[i], "exit") == 0) {
+        return 0;
+      } else {
+        int *len = &x;
+        char ** args = parse_args(commands[i], len, " ");
+
+        // cd
+        if (strcmp(args[0], "cd") == 0) {
+          changedir(args, len);
+        } else if (strchr(commands[i], '<') != NULL || strchr(commands[i], '>') != NULL) {
+          // redirection
+          if (strchr(commands[i], '<') != NULL) {
+            redir_out(args, len);
+          } else {
+            redir_in(args,len);
+          }
+        } else { // nothing special
+          int f = fork();
+          if (f) {
+            wait(status);
+          } else {
+            execvp(args[0], args);
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+int main1() {
     char y = 0;
     char *input = &y;
     int *status;
@@ -150,4 +193,4 @@ int main() {
         }
     }
     return 0;
-}
+}*/

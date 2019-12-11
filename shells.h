@@ -12,6 +12,8 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-char **parse_args(char *line, int *length);
+char **parse_args(char *line, int *length, char *del);
+void changedir(char **args, int *length);
+void redir_out(char **args, int *length);
+void redir_in(char **args, int *length);
 void free_args(char **args);
-char ***parse_parse_args(char *line, int *length);
