@@ -31,11 +31,12 @@ int main() {
             redir_in(args,len);
           }
         } else { // nothing special
-          printf("TRIGGERED");
+          printf("TRIGGERED\n");
           int f = fork();
           if (f) {
             wait(status);
           } else {
+            printf("TRIGGERED PT 2 \n");
             execvp(args[0], args);
           }
         }
