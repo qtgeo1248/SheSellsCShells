@@ -25,32 +25,33 @@ void changedir(char **args, int *length) {
 
 void redir_out(char **args, int *length) {
   int *status;
-  int fd = open(args[*length], O_RDWR | O_CREAT, 0644);
-  int backup = dup(STDOUT_FILENO);
-  //char temp[1000];
-  dup2(fd, STDOUT_FILENO);
+  char temp[1000];
   int i = 0;
   for (; i < *length; i++) {
       if (strcmp(args[i], ">") == 0) {
-      //    strcpy(temp, tokens[i+1]);
+          strcpy(temp, args[i+1]);
           args[i] = '\0';
       }
   }
+  int fd = open(temp, O_RDWR | O_CREAT, 0644);
+  int backup = dup(STDOUT_FILENO);
+  dup2(fd, STDOUT_FILENO);
   close(fd);
 }
 
 void redir_in(char **args, int *length) {
   int *status;
-  int fd = open(args[*length], O_RDONLY);
-  int backup = dup(STDIN_FILENO);
-  dup2(fd, STDIN_FILENO);
+  char temp[1000];
   int i = 0;
   for (; i < *length; i++) {
     if (strcmp(args[i], "<") == 0) {
-    //    strcpy(temp, tokens[i+1]);
+        strcpy(temp, args[i+1]);
         args[i] = '\0';
     }
   }
+  int fd = open(args[*length], O_RDONLY);
+  int backup = dup(STDIN_FILENO);
+  dup2(fd, STDIN_FILENO);
   close(fd);
 }
 
