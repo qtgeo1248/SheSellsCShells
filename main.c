@@ -30,6 +30,7 @@ int main() {
           changedir(args, len);
         } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
           // redirection
+          int temp_len = *len;
           int f = fork();
           if (f) {
             wait(status);
@@ -41,7 +42,7 @@ int main() {
               redir_in(args,len);
             }
             int z = 0;
-            for (; z < *len; z++) {
+            for (; z < temp_len; z++) {
               printf("%d: %s\n", z, args[z]);
             }
             execvp(args[0], args);
