@@ -38,6 +38,7 @@ void redir_out(char **args, int *length) {
           args[i] = NULL;
       }
   }
+  printf("TRIGGERED\n");
   int f = fork();
   if (f) {
       wait(status);
