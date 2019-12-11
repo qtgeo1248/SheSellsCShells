@@ -49,7 +49,7 @@ void redir_in(char **args, int *length) {
         args[i] = '\0';
     }
   }
-  int fd = open(args[*length], O_RDONLY);
+  int fd = open(temp, O_RDONLY);
   int backup = dup(STDIN_FILENO);
   dup2(fd, STDIN_FILENO);
   close(fd);
