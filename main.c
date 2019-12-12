@@ -35,16 +35,11 @@ int main() {
                     if (f) {
                         wait(status);
                     } else {
-                        printf("%d\n", temp_len);
                         if (strchr(temp, '>') != NULL) {
-                            redir_out(args, len);
+                            redir_out(args, temp_len);
                         }
                         if (strchr(temp, '<') != NULL) {
-                            redir_in(args,len);
-                        }
-                        int z = 0;
-                        for (; z < temp_len; z++) {
-                            printf("%d: %ss\n", z, args[z]);
+                            redir_in(args, temp_len);
                         }
                         execvp(args[0], args);
                     }

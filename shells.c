@@ -23,30 +23,39 @@ void changedir(char **args, int *length) {
     }
 }
 
-void redir_out(char **args, int *length) {
+boolean contains(char **args, int length, char *look) {
+    return 0;
+}
+
+void redir_out(char **args, int length) {
     char temp[1000];
     int i = 0;
-    for (; i < *length; i++) {
+    int stop  = 1;
+    for (; i < length && stop; i++) {
         if (strcmp(args[i], ">") == 0) {
             strcpy(temp, args[i + 1]);
             args[i] = NULL;
+            stop = 0;
         }
     }
-    int fd = open(temp, O_RDWR | O_CREAT, 0644);
+    int fd = open(temp, O_RDWR | O_CREAT | O_TRUNC, 0644);
     int backup = dup(STDOUT_FILENO);
     dup2(fd, STDOUT_FILENO);
     close(fd);
 }
 
-void redir_in(char **args, int *length) {
+void redir_in(char **args, int length) {
     char temp[1000];
     int i = 0;
-    for (; i < *length; i++) {
+    int stop = 1;
+    for (; i < length && stop; i++) {
         if (strcmp(args[i], "<") == 0) {
             strcpy(temp, args[i + 1]);
             args[i] = NULL;
+            stop = 0;
         }
     }
+    printf("works1\n");
     int fd = open(temp, O_RDONLY);
     int backup = dup(STDIN_FILENO);
     dup2(fd, STDIN_FILENO);

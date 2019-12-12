@@ -15,6 +15,7 @@
 char **parse_args(char *line, int *length, char *del);
 char *strip(char *line);
 void changedir(char **args, int *length);
-void redir_out(char **args, int *length);
-void redir_in(char **args, int *length);
+boolean contains(char **args, int length, char *look)
+void redir_out(char **args, int length);
+void redir_in(char **args, int length);
 void free_args(char **args);
