@@ -30,7 +30,7 @@ void redir_out(char **args, int *length) {
     for (; i < *length; i++) {
         if (strcmp(args[i], ">") == 0) {
             strcpy(temp, args[i+1]);
-            args[i] = '\0';
+            args[i] = NULL;
         }
     }
     int fd = open(temp, O_RDWR | O_CREAT, 0644);
@@ -46,7 +46,7 @@ void redir_in(char **args, int *length) {
     for (; i < *length; i++) {
         if (strcmp(args[i], "<") == 0) {
             strcpy(temp, args[i+1]);
-            args[i] = '\0';
+            args[i] = NULL;
         }
     }
     int fd = open(temp, O_RDONLY);

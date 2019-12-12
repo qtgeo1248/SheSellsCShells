@@ -41,10 +41,10 @@ int main() {
                 if (strchr(temp, '<') != NULL) {
                     redir_in(args,len);
                 }
-                int z = 0;
-                for (; z < temp_len; z++) {
-                    printf("%d: %s\n", z, args[z]);
-                }
+            //    int z = 0;
+            //    for (; z < temp_len; z++) {
+            //        printf("%d: %s\n", z, args[z]);
+            //    }
                 execvp(args[0], args);
             }
         } else { // nothing special
