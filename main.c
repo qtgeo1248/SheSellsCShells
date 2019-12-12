@@ -10,7 +10,7 @@ int main() {
         getcwd(dir, 1000);
         printf("%s$ ", dir);
         fgets(input, 1000, stdin);
-        char ** commands = parse_args(input, length, ";");
+        char **commands = parse_args(input, length, ";");
         int i = 0; // counter for prompts for loop
         //  printf("TEST %s y%dy\n", commands[1], *length);
         while (commands[i] != NULL) {
@@ -30,22 +30,22 @@ int main() {
                     changedir(args, len);
                 } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
                     // redirection
-                    int temp_len = *len;
+                    int temp_len = *len + 1;
                     int f = fork();
                     if (f) {
                         wait(status);
                     } else {
-                        int *backup = &x;
+                        printf("%d\n", temp_len);
                         if (strchr(temp, '>') != NULL) {
                             redir_out(args, len);
                         }
                         if (strchr(temp, '<') != NULL) {
                             redir_in(args,len);
                         }
-                    //    int z = 0;
-                    //    for (; z < temp_len; z++) {
-                    //        printf("%d: %s\n", z, args[z]);
-                    //    }
+                        int z = 0;
+                        for (; z < temp_len; z++) {
+                            printf("%d: %ss\n", z, args[z]);
+                        }
                         execvp(args[0], args);
                     }
                 } else { // nothing special

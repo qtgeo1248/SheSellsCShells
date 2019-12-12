@@ -24,7 +24,6 @@ void changedir(char **args, int *length) {
 }
 
 void redir_out(char **args, int *length) {
-    int *status;
     char temp[1000];
     int i = 0;
     for (; i < *length; i++) {
@@ -40,7 +39,6 @@ void redir_out(char **args, int *length) {
 }
 
 void redir_in(char **args, int *length) {
-    int *status;
     char temp[1000];
     int i = 0;
     for (; i < *length; i++) {
