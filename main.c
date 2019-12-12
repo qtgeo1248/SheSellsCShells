@@ -16,50 +16,51 @@ int main() {
         while (commands[i] != NULL) {
             char temp[1000];
             strcpy(temp, commands[i]);
-        //    printf("Com: %sEND\n", commands[i]);
-        if (strcmp(commands[i], "exit") == 0) {
-            return 0;
-        } else {
-            int *len = &x;
-            char *command = strip(commands[i]);
-            char **args = parse_args(command, len, " ");
-        //    printf("Command: %sEND\n", commands[i]);
-        //    printf("Arg[0]: %sEND\n", args[0]);
-        //    cd
-        if (strcmp(args[0], "cd") == 0) {
-            changedir(args, len);
-        } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
-            // redirection
-            int temp_len = *len;
-            int f = fork();
-            if (f) {
-                wait(status);
+            //    printf("Com: %sEND\n", commands[i]);
+            if (strcmp(commands[i], "exit") == 0) {
+                return 0;
             } else {
-                if (strchr(temp, '>') != NULL) {
-                    redir_out(args, len);
+                int *len = &x;
+                char *command = strip(commands[i]);
+                char **args = parse_args(command, len, " ");
+                //    printf("Command: %sEND\n", commands[i]);
+                //    printf("Arg[0]: %sEND\n", args[0]);
+                //    cd
+                if (strcmp(args[0], "cd") == 0) {
+                    changedir(args, len);
+                } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
+                    // redirection
+                    int temp_len = *len;
+                    int f = fork();
+                    if (f) {
+                        wait(status);
+                    } else {
+                        int *backup = &x;
+                        if (strchr(temp, '>') != NULL) {
+                            redir_out(args, len);
+                        }
+                        if (strchr(temp, '<') != NULL) {
+                            redir_in(args,len);
+                        }
+                    //    int z = 0;
+                    //    for (; z < temp_len; z++) {
+                    //        printf("%d: %s\n", z, args[z]);
+                    //    }
+                        execvp(args[0], args);
+                    }
+                } else { // nothing special
+                //    printf("TRIGGERED\n");
+                    int f = fork();
+                    if (f) {
+                        wait(status);
+                    } else {
+                    //    printf("TRIGGERED PT 2 \n");
+                        execvp(args[0], args);
+                    }
                 }
-                if (strchr(temp, '<') != NULL) {
-                    redir_in(args,len);
-                }
-            //    int z = 0;
-            //    for (; z < temp_len; z++) {
-            //        printf("%d: %s\n", z, args[z]);
-            //    }
-                execvp(args[0], args);
             }
-        } else { // nothing special
-        //    printf("TRIGGERED\n");
-            int f = fork();
-            if (f) {
-                wait(status);
-            } else {
-            //    printf("TRIGGERED PT 2 \n");
-                execvp(args[0], args);
-                }
-            }
-        }
-    //    printf("NEXT: %sEND\n", commands[i+1]);
-        i++;
+        //    printf("NEXT: %sEND\n", commands[i+1]);
+            i++;
         }
     }
     return 0;

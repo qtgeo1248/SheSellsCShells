@@ -29,7 +29,7 @@ void redir_out(char **args, int *length) {
     int i = 0;
     for (; i < *length; i++) {
         if (strcmp(args[i], ">") == 0) {
-            strcpy(temp, args[i+1]);
+            strcpy(temp, args[i + 1]);
             args[i] = NULL;
         }
     }
@@ -45,7 +45,7 @@ void redir_in(char **args, int *length) {
     int i = 0;
     for (; i < *length; i++) {
         if (strcmp(args[i], "<") == 0) {
-            strcpy(temp, args[i+1]);
+            strcpy(temp, args[i + 1]);
             args[i] = NULL;
         }
     }
