@@ -23,22 +23,37 @@ void changedir(char **args, int *length) {
     }
 }
 
-boolean contains(char **args, int length, char *look) {
+int contains(char **args, int length, char *look) {
+    int i = 0;
+    for (; i < length && args[i]; i++) {
+        if (strcmp(args[i], look) == 0) {
+            return 1;
+        }
+    }
     return 0;
 }
 
-void redir_out(char **args, int length) {
+void redir_out(char **args, int length, int if_append) {
     char temp[1000];
     int i = 0;
-    int stop  = 1;
+    int stop = 1;
     for (; i < length && stop; i++) {
         if (strcmp(args[i], ">") == 0) {
             strcpy(temp, args[i + 1]);
             args[i] = NULL;
             stop = 0;
+        } else if (strcmp(args[i], ">>") == 0) {
+            strcpy(temp, args[i + 1]);
+            args[i] = NULL;
+            stop = 0;
         }
     }
-    int fd = open(temp, O_RDWR | O_CREAT | O_TRUNC, 0644);
+    int fd;
+    if (if_append) {
+        fd = open(temp, O_RDWR | O_CREAT | O_APPEND, 0644);
+    } else {
+        fd = open(temp, O_RDWR | O_CREAT | O_TRUNC, 0644);
+    }
     int backup = dup(STDOUT_FILENO);
     dup2(fd, STDOUT_FILENO);
     close(fd);
@@ -55,7 +70,6 @@ void redir_in(char **args, int length) {
             stop = 0;
         }
     }
-    printf("works1\n");
     int fd = open(temp, O_RDONLY);
     int backup = dup(STDIN_FILENO);
     dup2(fd, STDIN_FILENO);

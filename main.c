@@ -35,10 +35,16 @@ int main() {
                     if (f) {
                         wait(status);
                     } else {
-                        if (strchr(temp, '>') != NULL) {
-                            redir_out(args, temp_len);
+                        char g[3] = ">";
+                        char l[3] = "<";
+                        char gg[3] = ">>";
+                        if (contains(args, temp_len, g)) {
+                            redir_out(args, temp_len, 0);
                         }
-                        if (strchr(temp, '<') != NULL) {
+                        if (contains(args, temp_len, gg)) {
+                            redir_out(args, temp_len, 1);
+                        }
+                        if (contains(args, temp_len, l)) {
                             redir_in(args, temp_len);
                         }
                         execvp(args[0], args);
