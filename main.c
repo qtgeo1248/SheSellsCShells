@@ -16,12 +16,14 @@ int main() {
     while (commands[i] != NULL) {
       char temp[1000];
       strcpy(temp, commands[i]);
-  //    printf("Com: %sEND\n", commands[i]);
-      if (strcmp(commands[i], "exit") == 0) {
+//      printf("Com: %sEND\n", commands[i]);
+      if (strcmp(strip(commands[i]), "exit") == 0) {
+//	printf("Trig");
         return 0;
       } else {
+//	printf("Trig");
         int *len = &x;
-        char *command = strip(commands[i]);
+        char *command = commands[i];
         char **args = parse_args(command, len, " ");
       //  printf("Command: %sEND\n", commands[i]);
       //  printf("Arg[0]: %sEND\n", args[0]);
@@ -48,12 +50,12 @@ int main() {
             execvp(args[0], args);
           }
         } else { // nothing special
-      //    printf("TRIGGERED\n");
+  //        printf("TRIGGERED\n");
           int f = fork();
           if (f) {
             wait(status);
           } else {
-        //    printf("TRIGGERED PT 2 \n");
+    //        printf("TRIGGERED PT 2 \n");
             execvp(args[0], args);
           }
         }
