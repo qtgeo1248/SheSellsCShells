@@ -12,7 +12,10 @@ int main() {
             errno = 0;
         }
         printf("%s$ ", dir);
-        fgets(input, 1000, stdin);
+        if (!fgets(input, 1000, stdin)) {
+            printf("[%d]: %s\n", errno, strerror(errno));
+            errno = 0;
+        }
         char **commands = parse_args(input, length, ";");
         int i = 0; // counter for prompts for loop
         //  printf("TEST %s y%dy\n", commands[1], *length);
@@ -73,7 +76,10 @@ int main() {
                         FILE *pipe_out = popen(thingies[1], "w");
                         char buf[1000];
                         while (fgets(buf, 1000, pipe_in)) {
-                            fputs(buf, pipe_out);
+                            if (!fputs(buf, pipe_out)) {
+                                printf("[%d]: %s\n", errno, strerror(errno));
+                                errno = 0;
+                            }
                         }
                         pclose(pipe_out);
                         pclose(pipe_in);
@@ -82,10 +88,17 @@ int main() {
                 //    printf("TRIGGERED\n");
                     int f = fork();
                     if (f) {
+                        if (f < 0) {
+                            printf("[%d]: %s\n", errno, strerror(errno));
+                            errno = 0;
+                        }
                         wait(status);
                     } else {
                     //    printf("TRIGGERED PT 2 \n");
-                        execvp(args[0], args);
+                        if (execvp(args[0], args) < 0) {
+                            printf("[%d]: %s\n", errno, strerror(errno));
+                            errno = 0;
+                        }
                     }
                 }
             }
