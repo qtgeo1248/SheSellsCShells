@@ -114,13 +114,6 @@ void redir_in(char **args, int length) {
     }
 }
 
-void free_args(char **args) {
-    int i = 0;
-    for (; args[i] != NULL; i++) {
-        free(args[i]);
-    }
-}
-
 char *strip(char *line) {
     int index = strlen(line) - 1;
     line[index] = '\0';
