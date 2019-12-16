@@ -7,7 +7,10 @@ int main() {
     char dir[1000]; // bash prompt
     int *status; // for parent process
     while (strcmp(input, "exit") != 0) {
-        getcwd(dir, 1000);
+        if (!getcwd(dir, 1000)) {
+            printf("[%d]: %s\n", errno, strerror(errno));
+            errno = 0;
+        }
         printf("%s$ ", dir);
         fgets(input, 1000, stdin);
         char **commands = parse_args(input, length, ";");
@@ -32,7 +35,10 @@ int main() {
                     // redirection
                     int temp_len = *len + 1;
                     int f = fork();
-                    if (f) {
+                    if (f < 0) {
+                        printf("[%d]: %s\n", errno, strerror(errno));
+                        errno = 0;
+                    } else if (f) {
                         wait(status);
                     } else {
                         char g[3] = ">";
@@ -47,11 +53,18 @@ int main() {
                         if (contains(args, temp_len, l)) {
                             redir_in(args, temp_len);
                         }
-                        execvp(args[0], args);
+                        if (execvp(args[0], args) < 0) {
+                            printf("[%d]: %s\n", errno, strerror(errno));
+                            errno = 0;
+                        }
                     }
                 } else if (strchr(temp, '|') != NULL) {
                     int f = fork();
                     if (f) {
+                        if (f < 0) {
+                            printf("[%d]: %s\n", errno, strerror(errno));
+                            errno = 0;
+                        }
                         wait(status);
                     } else {
                         int *temp_len = &x;
