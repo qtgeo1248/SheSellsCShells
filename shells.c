@@ -15,14 +15,14 @@ char **parse_args(char *line, int *length, char *del) {
     return tokens;
 }
 
-void changedir(char **args, int *length) {
-    if (*length == 0) {
+void changedir(char **args, int length) {
+    if (length == 0) {
         if (chdir("/") != 0) {
             printf("[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
     } else {
-        if (chdir(args[*length]) != 0) {
+        if (chdir(args[length]) != 0) {
             printf("[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }

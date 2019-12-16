@@ -17,19 +17,19 @@ int main() {
             errno = 0;
         }
         char **commands = parse_args(input, length, ";");
-        int i = 0; // counter for number command prompts for loop (basically does semicolon stuff)
+        int i = 0; // counter for number command prompts for loop
         while (commands[i] != NULL) {
             char temp[1000]; //var for the current command
             strcpy(temp, commands[i]);
-            if (strcmp(commands[i], "exit") == 0) {
+            if (strcmp(commands[i], "exit") == 0) { //checks if you want to exit
                 return 0;
             } else {
                 int *len = &x;
                 char *command = strip(commands[i]);
                 char **args = parse_args(command, len, " ");
-                if (strcmp(args[0], "cd") == 0) {//for cd
-                    changedir(args, len);
-                } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {//for redirection
+                if (strcmp(args[0], "cd") == 0) { //for cd
+                    changedir(args, *len);
+                } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) { //for redirection
                     int temp_len = *len + 1;
                     int f = fork();
                     if (f < 0) {
@@ -41,6 +41,7 @@ int main() {
                         char g[3] = ">";
                         char l[3] = "<";
                         char gg[3] = ">>";
+                        //The three if statements check which type of redirection it is
                         if (contains(args, temp_len, g)) {
                             redir_out(args, temp_len, 0);
                         }
@@ -50,6 +51,8 @@ int main() {
                         if (contains(args, temp_len, l)) {
                             redir_in(args, temp_len);
                         }
+                        //then it executes the command, so when the stdin and stdout are
+                        //correctly replaced, then it should do the redirection correctly
                         if (execvp(args[0], args) < 0) {
                             printf("[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
