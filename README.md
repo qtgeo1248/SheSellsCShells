@@ -26,7 +26,7 @@ Other notes:
 :mushroom: Warning :mushroom:
 
 Our parser can handle up to 9 different inputs, but no more than that!
-That means that 'ls -a -b -c -d -e -f -g -h' works but 'ls -a -b -c -d -e -f -g -h -i' does not!
+That means that 'ls -a -b -c -d -e -f -g -h' works but 'ls -a -b -c -d -e -f -g -h -i' does not! Similarly, it can handle up to 9 commands, all correctly separated by ' ; '.
 
 
 ## Files & Functions
