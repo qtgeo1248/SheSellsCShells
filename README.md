@@ -1,4 +1,4 @@
-# SheSellsCShells
+# SheSellsCShells :shell:
 
 ## Our Shell Features
 In our shell, the user should be able to successfully input most bash
@@ -10,5 +10,88 @@ commands, with implementations of:
 * pipe |
 
 ## Our Unsuccessful Features
+We are not completely sure if our errno system works. For example, when a command is inputed that doesn't exist, the error returned is no such file or directory.
+
+We also were unable to implement the guarantee of hair regrowth :worried:
 
 ## Bugs Bugs Bugs
+Notes about errors:
+* after an error occurs, it may take several tries to exit the shell
+
+Other notes:
+* using two redirections in the same 'direction' breaks the parser (ex: ls > ls > output)
+* multiple pipes not implemented, only simple pipe
+* putting in extra spaces between inputs doesn't work
+
+:mushroom: Warning :mushroom:
+Our parser can handle up to 9 different inputs, but no more than that!
+That means that 'ls -a -b -c -d -e -f -g -h' works but 'ls -a -b -c -d -e -f -g -h -i' does not!
+
+
+## Files & Functions
+### shells.c
+Includes the functions ran by the shell to execute commands based on what is in the input.
+```
+char **parse_args()
+```
+Inputs: char \*line
+        int \*length
+        char \*del
+Returns: Array of the parsed line broken up by the delimiter
+
+Parses the line using the delimiter and inputs the length of the array into the pointer given
+Used to parse for semicolons and spaces
+
+```
+void changedir()
+```
+Inputs: char \** args
+        int \*length
+
+Executes the 'cd' command using chdir()
+
+```
+int contains()
+```
+Inputs: char \**args
+        int length
+        char \*look
+Returns: 1 if args contains look
+         0 if args does not contain look
+
+Given the length of args and the array itself, checks if the array contains look
+Mostly used for redirection purposes
+
+```
+void redir_out()
+```
+Inputs: char \**args
+        int length
+        int if_append
+
+Executes the '>' function or '>>' function, depending on the if_append parameter
+
+```
+void redir_in()
+```
+Inputs: char \**args
+        int length
+
+Executes the '<' function
+
+```
+char *strip(char *line)
+```
+Inputs: char \*line
+Returns: the stripped line
+
+Strips the front and end of the line of whitespace
+Both returns the new line and directly changes the line, no need to run strip twice
+
+### main.c
+Main executor of the shell, calls function in shells.c as necessary based on the cases given.
+```
+int main()
+```
+Not much to say here... :ok_hand:
+Responsible for checking to see which functions need to be called and forking and executing commands as necessary
