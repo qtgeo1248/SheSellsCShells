@@ -11,7 +11,7 @@ char **parse_args(char *line, int *length, char *del) {
         i++;
     }
     tokens[i] = 0;
-    *length = i - 1;
+    *length = i;
     return tokens;
 }
 

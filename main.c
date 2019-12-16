@@ -30,7 +30,7 @@ int main() {
                     changedir(args, len);
                 } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
                     // redirection
-                    int temp_len = *len + 1;
+                    int temp_len = *len;
                     int f = fork();
                     if (f) {
                         wait(status);
@@ -48,6 +48,22 @@ int main() {
                             redir_in(args, temp_len);
                         }
                         execvp(args[0], args);
+                    }
+                } else if (strchr(temp, '|') != NULL) {
+                    int f = fork();
+                    if (f) {
+                        wait(status);
+                    } else {
+                        int *temp_len = &x;
+                        char** thingies = parse_args(temp, temp_len, "|");
+                        FILE *pipe_in = popen(thingies[0], "r");
+                        FILE *pipe_out = popen(thingies[1], "w");
+                        char buf[1000];
+                        while (fgets(buf, 1000, pipe_in)) {
+                            fputs(buf, pipe_out);
+                        }
+                        pclose(pipe_out);
+                        pclose(pipe_in);
                     }
                 } else { // nothing special
                 //    printf("TRIGGERED\n");
