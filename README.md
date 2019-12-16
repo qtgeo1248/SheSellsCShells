@@ -31,27 +31,27 @@ That means that 'ls -a -b -c -d -e -f -g -h' works but 'ls -a -b -c -d -e -f -g 
 
 ## Files & Functions
 ### shells.c
-Includes the functions ran by the shell to execute commands based on what is in the input.
+The file includes the functions ran by the shell to execute commands based on what is in the input.
 ```
 char **parse_args()
 
-Inputs: char \*line
-        int \*length
-        char \*del
+Inputs: char *line
+        int *length
+        char *del
 Returns: Array of the parsed line broken up by the delimiter
 ```
 
 Parses the line using the delimiter and inputs the length of the array into the pointer given
-Used to parse for semicolons and spaces
+Used to parse for semicolons and spaces. In addition, it "returns" the number of arguments by updating the value in ``*length``.
 
 ```
 void changedir()
 
-Inputs: char \** args
-        int \*length
+Inputs: char ** args
+        int *length
 ```
 
-Executes the 'cd' command using chdir()
+Executes the 'cd' command using chdir(). If no input was given into the cd, then it will go to the home directory automatically.
 
 ```
 int contains()
@@ -63,32 +63,31 @@ Returns: 1 if args contains look
          0 if args does not contain look
 ```
 
-Given the length of args and the array itself, checks if the array contains look
-Mostly used for redirection purposes
+Given the length of args and the array itself, checks if the array contains look. It's mostly used for redirection purposes.
 
 ```
 void redir_out()
 
-Inputs: char \**args
+Inputs: char **args
         int length
         int if_append
 ```
 
-Executes the '>' function or '>>' function, depending on the if_append parameter
+It sets up the '>' function or '>>' function, depending on the if_append parameter, which is 0 if you want to just do '>', 1 if you want to do '>>'. It replaces ``stdout`` with the file you want that is included in ``args``.
 
 ```
 void redir_in()
 
-Inputs: char \**args
+Inputs: char **args
         int length
 ```
 
-Executes the '<' function
+Executes the '<' function. It replaces ``stdin`` with the file you want that is included in  ``args``.
 
 ```
 char *strip(char *line)
 
-Inputs: char \*line
+Inputs: char *line
 Returns: the stripped line
 ```
 

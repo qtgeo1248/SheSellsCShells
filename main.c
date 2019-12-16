@@ -30,18 +30,19 @@ int main() {
                 if (strcmp(args[0], "cd") == 0) { //for cd
                     changedir(args, *len);
                 } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) { //for redirection
-                    int temp_len = *len + 1;
-                    int f = fork();
-                    if (f < 0) {
-                        printf("[%d]: %s\n", errno, strerror(errno));
-                        errno = 0;
-                    } else if (f) {
+                    int temp_len = *len;
+                    int f = fork(); //FORK
+                    if (f) {
+                        if (f < 0) { //errno stuff
+                            printf("[%d]: %s\n", errno, strerror(errno));
+                            errno = 0;
+                        }
                         wait(status);
                     } else {
                         char g[3] = ">";
                         char l[3] = "<";
                         char gg[3] = ">>";
-                        //The three if statements check which type of redirection it is
+                        //The three if statements check which type(s) of redirection it is
                         if (contains(args, temp_len, g)) {
                             redir_out(args, temp_len, 0);
                         }
@@ -54,14 +55,16 @@ int main() {
                         //then it executes the command, so when the stdin and stdout are
                         //correctly replaced, then it should do the redirection correctly
                         if (execvp(args[0], args) < 0) {
+                            //errno stuff
                             printf("[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
                     }
                 } else if (strchr(temp, '|') != NULL) {
-                    int f = fork();
+                    int f = fork(); //BORK BORK
                     if (f) {
                         if (f < 0) {
+                            //errno stuff
                             printf("[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
@@ -69,20 +72,24 @@ int main() {
                     } else {
                         int *temp_len = &x;
                         char** thingies = parse_args(temp, temp_len, "|");
+                        //this creates both sides of the pipe
                         FILE *pipe_in = popen(thingies[0], "r");
                         FILE *pipe_out = popen(thingies[1], "w");
                         char buf[1000];
                         while (fgets(buf, 1000, pipe_in)) {
+                            //then it will feed stuff into the pipe for the
+                            //other side to read
                             if (!fputs(buf, pipe_out)) {
+                                //errno stuff
                                 printf("[%d]: %s\n", errno, strerror(errno));
                                 errno = 0;
                             }
                         }
-                        pclose(pipe_out);
-                        pclose(pipe_in);
+                        pclose(pipe_out); //closing pipes
+                        pclose(pipe_in);  //to be locked forever
                     }
-                } else { // nothing special
-                    int f = fork();
+                } else { //the case where there's nothing special
+                    int f = fork(); //BARK BARK BARK
                     if (f) {
                         if (f < 0) {
                             printf("[%d]: %s\n", errno, strerror(errno));
@@ -91,6 +98,7 @@ int main() {
                         wait(status);
                     } else {
                         if (execvp(args[0], args) < 0 && strcmp("exit", args[0]) != 0) {
+                            //errno stuff
                             printf("[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }

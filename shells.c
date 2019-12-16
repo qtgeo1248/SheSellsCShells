@@ -1,5 +1,8 @@
 #include "shells.h"
 
+//Note that the comments and functionalities of these
+//functions are included in the README!!!
+
 char **parse_args(char *line, int *length, char *del) {
     char *token;
     char **tokens;
