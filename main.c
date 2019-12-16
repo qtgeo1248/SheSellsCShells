@@ -1,11 +1,11 @@
 #include "shells.h"
 
 int main() {
-    int x = 0; // filler int
-    int *length = &x;
-    char input[1000]; // fgets input
-    char dir[1000]; // bash prompt
-    int *status; // for parent process
+    int x = 0; //some random filler int when we do addresses
+    int *length = &x; //var for number of arguments in a command
+    char input[1000]; //var for fgets input; the entire line the use inputs
+    char dir[1000]; //var for bash prompt when we get the current directory
+    int *status; //var for parent process when they wait()
     while (strcmp(input, "exit") != 0) {
         if (!getcwd(dir, 1000)) {
             printf("[%d]: %s\n", errno, strerror(errno));
@@ -17,25 +17,19 @@ int main() {
             errno = 0;
         }
         char **commands = parse_args(input, length, ";");
-        int i = 0; // counter for prompts for loop
-        //  printf("TEST %s y%dy\n", commands[1], *length);
+        int i = 0; // counter for number command prompts for loop (basically does semicolon stuff)
         while (commands[i] != NULL) {
-            char temp[1000];
+            char temp[1000]; //var for the current command
             strcpy(temp, commands[i]);
-            //    printf("Com: %sEND\n", commands[i]);
             if (strcmp(commands[i], "exit") == 0) {
                 return 0;
             } else {
                 int *len = &x;
                 char *command = strip(commands[i]);
                 char **args = parse_args(command, len, " ");
-                //    printf("Command: %sEND\n", commands[i]);
-                //    printf("Arg[0]: %sEND\n", args[0]);
-                //    cd
-                if (strcmp(args[0], "cd") == 0) {
+                if (strcmp(args[0], "cd") == 0) {//for cd
                     changedir(args, len);
-                } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
-                    // redirection
+                } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {//for redirection
                     int temp_len = *len + 1;
                     int f = fork();
                     if (f < 0) {
@@ -85,7 +79,6 @@ int main() {
                         pclose(pipe_in);
                     }
                 } else { // nothing special
-                //    printf("TRIGGERED\n");
                     int f = fork();
                     if (f) {
                         if (f < 0) {
@@ -94,7 +87,6 @@ int main() {
                         }
                         wait(status);
                     } else {
-                    //    printf("TRIGGERED PT 2 \n");
                         if (execvp(args[0], args) < 0) {
                             printf("[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
@@ -102,7 +94,6 @@ int main() {
                     }
                 }
             }
-        //    printf("NEXT: %sEND\n", commands[i+1]);
             i++;
         }
     }
