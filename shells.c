@@ -95,9 +95,23 @@ void redir_in(char **args, int length) {
         }
     }
     int fd = open(temp, O_RDONLY);
+    if (fd < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
     int backup = dup(STDIN_FILENO);
-    dup2(fd, STDIN_FILENO);
-    close(fd);
+    if (backup < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
+    if (dup2(fd, STDIN_FILENO) < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
+    if (close(fd) < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
 }
 
 void free_args(char **args) {
