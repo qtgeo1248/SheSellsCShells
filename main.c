@@ -90,7 +90,7 @@ int main() {
                         }
                         wait(status);
                     } else {
-                        if (execvp(args[0], args) < 0) {
+                        if (execvp(args[0], args) < 0 && strcmp("exit", args[0]) != 0) {
                             printf("[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
