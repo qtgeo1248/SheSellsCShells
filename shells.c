@@ -18,12 +18,12 @@ char **parse_args(char *line, int *length, char *del) {
 void changedir(char **args, int *length) {
     if (*length == 0) {
         if (chdir("/") != 0) {
-            printf("[%d]: %s\n", errno, strerror(errno));
+            printf("A[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
     } else {
         if (chdir(args[*length]) != 0) {
-            printf("[%d]: %s\n", errno, strerror(errno));
+            printf("B[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
     }
@@ -58,23 +58,23 @@ void redir_out(char **args, int length, int if_append) {
     if (if_append) {
         fd = open(temp, O_RDWR | O_CREAT | O_APPEND, 0644);
         if (fd < 0) {
-            printf("[%d]: %s\n", errno, strerror(errno));
+            printf("C[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
     } else {
         fd = open(temp, O_RDWR | O_CREAT | O_TRUNC, 0644);
         if (fd < 0) {
-            printf("[%d]: %s\n", errno, strerror(errno));
+            printf("D[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
     }
     int backup = dup(STDOUT_FILENO);
     if (backup < 0) {
-        printf("[%d]: %s\n", errno, strerror(errno));
+        printf("E[%d]: %s\n", errno, strerror(errno));
         errno = 0;
     }
     if (dup2(fd, STDOUT_FILENO) < 0) {
-        printf("[%d]: %s\n", errno, strerror(errno));
+        printf("F[%d]: %s\n", errno, strerror(errno));
         errno = 0;
     }
     if (close(fd) < 0) {
@@ -101,15 +101,15 @@ void redir_in(char **args, int length) {
     }
     int backup = dup(STDIN_FILENO);
     if (backup < 0) {
-        printf("[%d]: %s\n", errno, strerror(errno));
+        printf("G[%d]: %s\n", errno, strerror(errno));
         errno = 0;
     }
     if (dup2(fd, STDIN_FILENO) < 0) {
-        printf("[%d]: %s\n", errno, strerror(errno));
+        printf("H[%d]: %s\n", errno, strerror(errno));
         errno = 0;
     }
     if (close(fd) < 0) {
-        printf("[%d]: %s\n", errno, strerror(errno));
+        printf("I[%d]: %s\n", errno, strerror(errno));
         errno = 0;
     }
 }

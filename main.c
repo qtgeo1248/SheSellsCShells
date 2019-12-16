@@ -8,12 +8,12 @@ int main() {
     int *status; //var for parent process when they wait()
     while (strcmp(input, "exit") != 0) {
         if (!getcwd(dir, 1000)) {
-            printf("[%d]: %s\n", errno, strerror(errno));
+            printf("J[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
         printf("%s$ ", dir);
         if (!fgets(input, 1000, stdin)) {
-            printf("[%d]: %s\n", errno, strerror(errno));
+            printf("K[%d]: %s\n", errno, strerror(errno));
             errno = 0;
         }
         char **commands = parse_args(input, length, ";");
@@ -33,7 +33,7 @@ int main() {
                     int temp_len = *len + 1;
                     int f = fork();
                     if (f < 0) {
-                        printf("[%d]: %s\n", errno, strerror(errno));
+                        printf("L[%d]: %s\n", errno, strerror(errno));
                         errno = 0;
                     } else if (f) {
                         wait(status);
@@ -51,7 +51,7 @@ int main() {
                             redir_in(args, temp_len);
                         }
                         if (execvp(args[0], args) < 0) {
-                            printf("[%d]: %s\n", errno, strerror(errno));
+                            printf("M[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
                     }
@@ -59,7 +59,7 @@ int main() {
                     int f = fork();
                     if (f) {
                         if (f < 0) {
-                            printf("[%d]: %s\n", errno, strerror(errno));
+                            printf("N[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
                         wait(status);
@@ -71,7 +71,7 @@ int main() {
                         char buf[1000];
                         while (fgets(buf, 1000, pipe_in)) {
                             if (!fputs(buf, pipe_out)) {
-                                printf("[%d]: %s\n", errno, strerror(errno));
+                                printf("O[%d]: %s\n", errno, strerror(errno));
                                 errno = 0;
                             }
                         }
@@ -82,13 +82,13 @@ int main() {
                     int f = fork();
                     if (f) {
                         if (f < 0) {
-                            printf("[%d]: %s\n", errno, strerror(errno));
+                            printf("P[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
                         wait(status);
                     } else {
                         if (execvp(args[0], args) < 0) {
-                            printf("[%d]: %s\n", errno, strerror(errno));
+                            printf("Q[%d]: %s\n", errno, strerror(errno));
                             errno = 0;
                         }
                     }
