@@ -19,7 +19,7 @@ Notes about errors:
 * after an error occurs, it may take several tries to exit the shell
 
 Other notes:
-* using two redirections in the same 'direction' breaks the parser (ex: ls > ls > output)
+* using two redirections in the same 'direction' breaks the parser (ex: ls > out.txt > output.txt)
 * multiple pipes not implemented, only simple pipe
 * putting in extra spaces between inputs doesn't work
 
@@ -47,23 +47,23 @@ Used to parse for semicolons and spaces. In addition, it "returns" the number of
 ```
 void changedir()
 
-Inputs: char ** args
-        int *length
+Inputs: char **args
+        int length
 ```
 
-Executes the 'cd' command using chdir(). If no input was given into the cd, then it will go to the home directory automatically.
+Executes the 'cd' command using the ``chdir`` command. If no input was given into the cd, then it will go to the home directory automatically. ``length`` is the length of ``args``, which should have already been calculated beforehand.
 
 ```
 int contains()
 
-Inputs: char \**args
+Inputs: char **args
         int length
-        char \*look
+        char *look
 Returns: 1 if args contains look
          0 if args does not contain look
 ```
 
-Given the length of args and the array itself, checks if the array contains look. It's mostly used for redirection purposes.
+Given the length of ``args`` and the ``args`` itself, checks if the array contains look. It's mostly used for redirection purposes.
 
 ```
 void redir_out()
@@ -82,7 +82,7 @@ Inputs: char **args
         int length
 ```
 
-Executes the '<' function. It replaces ``stdin`` with the file you want that is included in  ``args``. In addition, it correctly places a ``NULL`` such that it is correctly inputed into ``execvp``.
+It sets up the '<' function. It replaces ``stdin`` with the file you want that is included in  ``args``. In addition, it correctly places a ``NULL`` such that it is correctly inputed into ``execvp``.
 
 ```
 char *strip(char *line)
