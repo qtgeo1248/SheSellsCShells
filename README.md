@@ -36,9 +36,9 @@ Includes the functions ran by the shell to execute commands based on what is in 
 char **parse_args()
 ```
 Inputs: char \*line
-        int \*length
-        char \*del
-        
+        ...int \*length
+        ...char \*del
+
 Returns: Array of the parsed line broken up by the delimiter
 
 Parses the line using the delimiter and inputs the length of the array into the pointer given
@@ -48,6 +48,7 @@ Used to parse for semicolons and spaces
 void changedir()
 ```
 Inputs: char \** args
+
         int \*length
 
 Executes the 'cd' command using chdir()
