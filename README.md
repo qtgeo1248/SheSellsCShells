@@ -34,10 +34,11 @@ That means that 'ls -a -b -c -d -e -f -g -h' works but 'ls -a -b -c -d -e -f -g 
 Includes the functions ran by the shell to execute commands based on what is in the input.
 ```
 char **parse_args()
-```
+
 Inputs: char \*line
-        ...int \*length
-        ...char \*del
+        int \*length
+        char \*del
+```
 
 Returns: Array of the parsed line broken up by the delimiter
 
