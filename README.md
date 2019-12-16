@@ -73,7 +73,7 @@ Inputs: char **args
         int if_append
 ```
 
-It sets up the '>' function or '>>' function, depending on the if_append parameter, which is 0 if you want to just do '>', 1 if you want to do '>>'. It replaces ``stdout`` with the file you want that is included in ``args``.
+It sets up the '>' function or '>>' function, depending on the if_append parameter, which is 0 if you want to just do '>', 1 if you want to do '>>'. It replaces ``stdout`` with the file you want that is included in ``args``. In addition, it correctly places a ``NULL`` such that it is correctly inputed into ``execvp``.
 
 ```
 void redir_in()
@@ -82,7 +82,7 @@ Inputs: char **args
         int length
 ```
 
-Executes the '<' function. It replaces ``stdin`` with the file you want that is included in  ``args``.
+Executes the '<' function. It replaces ``stdin`` with the file you want that is included in  ``args``. In addition, it correctly places a ``NULL`` such that it is correctly inputed into ``execvp``.
 
 ```
 char *strip(char *line)
