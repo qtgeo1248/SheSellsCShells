@@ -57,12 +57,30 @@ void redir_out(char **args, int length, int if_append) {
     int fd;
     if (if_append) {
         fd = open(temp, O_RDWR | O_CREAT | O_APPEND, 0644);
+        if (fd < 0) {
+            printf("[%d]: %s\n", errno, strerror(errno));
+            errno = 0;
+        }
     } else {
         fd = open(temp, O_RDWR | O_CREAT | O_TRUNC, 0644);
+        if (fd < 0) {
+            printf("[%d]: %s\n", errno, strerror(errno));
+            errno = 0;
+        }
     }
     int backup = dup(STDOUT_FILENO);
-    dup2(fd, STDOUT_FILENO);
-    close(fd);
+    if (backup < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
+    if (dup2(fd, STDOUT_FILENO) < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
+    if (close(fd) < 0) {
+        printf("[%d]: %s\n", errno, strerror(errno));
+        errno = 0;
+    }
 }
 
 void redir_in(char **args, int length) {
