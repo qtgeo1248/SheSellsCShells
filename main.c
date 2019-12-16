@@ -30,7 +30,7 @@ int main() {
                     changedir(args, len);
                 } else if (strchr(temp, '<') != NULL || strchr(temp, '>') != NULL) {
                     // redirection
-                    int temp_len = *len;
+                    int temp_len = *len + 1;
                     int f = fork();
                     if (f) {
                         wait(status);

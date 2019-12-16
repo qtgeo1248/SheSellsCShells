@@ -11,15 +11,21 @@ char **parse_args(char *line, int *length, char *del) {
         i++;
     }
     tokens[i] = 0;
-    *length = i;
+    *length = i - 1;
     return tokens;
 }
 
 void changedir(char **args, int *length) {
     if (*length == 0) {
-        chdir("/");
+        if (chdir("/") != 0) {
+            printf("[%d]: %s\n", errno, strerror(errno));
+            errno = 0;
+        }
     } else {
-        chdir(args[*length]);
+        if (chdir(args[*length]) != 0) {
+            printf("[%d]: %s\n", errno, strerror(errno));
+            errno = 0;
+        }
     }
 }
 
