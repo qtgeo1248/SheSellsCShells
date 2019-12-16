@@ -24,6 +24,7 @@ Other notes:
 * putting in extra spaces between inputs doesn't work
 
 :mushroom: Warning :mushroom:
+
 Our parser can handle up to 9 different inputs, but no more than that!
 That means that 'ls -a -b -c -d -e -f -g -h' works but 'ls -a -b -c -d -e -f -g -h -i' does not!
 
@@ -37,6 +38,7 @@ char **parse_args()
 Inputs: char \*line
         int \*length
         char \*del
+        
 Returns: Array of the parsed line broken up by the delimiter
 
 Parses the line using the delimiter and inputs the length of the array into the pointer given
