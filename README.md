@@ -38,56 +38,58 @@ char **parse_args()
 Inputs: char \*line
         int \*length
         char \*del
-```
-
 Returns: Array of the parsed line broken up by the delimiter
+```
 
 Parses the line using the delimiter and inputs the length of the array into the pointer given
 Used to parse for semicolons and spaces
 
 ```
 void changedir()
-```
 Inputs: char \** args
-
         int \*length
+```
 
 Executes the 'cd' command using chdir()
 
 ```
 int contains()
-```
+
 Inputs: char \**args
         int length
         char \*look
 Returns: 1 if args contains look
          0 if args does not contain look
+```
 
 Given the length of args and the array itself, checks if the array contains look
 Mostly used for redirection purposes
 
 ```
 void redir_out()
-```
+
 Inputs: char \**args
         int length
         int if_append
+```
 
 Executes the '>' function or '>>' function, depending on the if_append parameter
 
 ```
 void redir_in()
-```
+
 Inputs: char \**args
         int length
+```
 
 Executes the '<' function
 
 ```
 char *strip(char *line)
-```
+
 Inputs: char \*line
 Returns: the stripped line
+```
 
 Strips the front and end of the line of whitespace
 Both returns the new line and directly changes the line, no need to run strip twice
